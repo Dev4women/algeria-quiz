@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import questions from "../data/questions";
+import confetti from "canvas-confetti";
 
 function Quiz() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -8,6 +9,32 @@ function Quiz() {
   const [showResult, setShowResult] = useState(false);
 
   const currentQuestion = questions[currentQuestionIndex];
+
+  useEffect(() => {
+  if (showResult) {
+    const audio = new Audio(`${import.meta.env.BASE_URL}kassaman.mp3`);
+    audio.play().catch((error) => {
+      console.error("Erreur de lecture audio :", error);
+    });
+
+    const flagShape = confetti.shapeFromText({ text: "🇩🇿", scalar: 4 });
+
+    const interval = setInterval(() => {
+      confetti({
+        particleCount: 10,
+        startVelocity: 15,
+        gravity: 0.3,
+        spread: 100,
+        ticks: 700,
+        origin: { x: Math.random(), y: 0 },
+        shapes: [flagShape],
+        scalar: 6,
+      });
+    }, 250);
+
+    return () => clearInterval(interval);
+  }
+}, [showResult]);
 
   function handleAnswerClick(option) {
     if (selectedAnswer) return;
