@@ -12,8 +12,9 @@ function Quiz() {
 
   useEffect(() => {
   if (showResult) {
-    const audio = new Audio(`${import.meta.env.BASE_URL}kassaman.mp3`);
-    audio.play().catch((error) => {
+   const audio = new Audio(`${import.meta.env.BASE_URL}kassaman.mp3`);
+audio.loop = true;
+audio.play().catch((error) => {
       console.error("Erreur de lecture audio :", error);
     });
 
